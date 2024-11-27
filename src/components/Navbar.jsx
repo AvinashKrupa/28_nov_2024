@@ -39,12 +39,12 @@ const Navbar = () => {
     navigate('/');
   };
 
-  const scrollToFeatures = () => {
-    const featuresSection = document.getElementById('features');
-    if (featuresSection) {
-      featuresSection.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      navigate('/', { state: { scrollTo: 'features' } });
+  const scrollToSection = (sectionId) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    } else if (location.pathname !== '/') {
+      navigate('/', { state: { scrollTo: sectionId } });
     }
   };
 
@@ -71,18 +71,24 @@ const Navbar = () => {
         </Link>
         
         <div className="hidden md:flex items-center space-x-8">
-          <Link to="/" className="text-white hover:text-[#5D3FD3] transition-colors">
-            Home
-          </Link>
           <button 
-            onClick={scrollToFeatures}
+            onClick={() => scrollToSection('home')}
+            className="text-white hover:text-[#5D3FD3] transition-colors"
+          >
+            Home
+          </button>
+          <button 
+            onClick={() => scrollToSection('features')}
             className="text-white hover:text-[#5D3FD3] transition-colors"
           >
             Features
           </button>
-          <Link to="/about" className="text-white hover:text-[#5D3FD3] transition-colors">
+          <button 
+            onClick={() => scrollToSection('about')}
+            className="text-white hover:text-[#5D3FD3] transition-colors"
+          >
             About Us
-          </Link>
+          </button>
           {isAuthenticated && (
             <Link to="/dashboard" className="text-white hover:text-[#5D3FD3] transition-colors">
               Dashboard

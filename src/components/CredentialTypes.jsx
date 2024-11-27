@@ -6,7 +6,7 @@ const credentialTypes = [
   {
     title: 'Banking Credentials',
     icon: CreditCard,
-    image: 'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?auto=format&fit=crop&q=80',
+    image: '/BankingCredentials.jpg',
     description: 'Securely store your banking passwords and PINs'
   },
   {
@@ -18,13 +18,13 @@ const credentialTypes = [
   {
     title: 'Entertainment Platform Credentials',
     icon: Tv,
-    image: 'https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?auto=format&fit=crop&q=80',
+    image: '/Entertainment.jpg',
     description: 'Store streaming and entertainment login details'
   },
   {
     title: 'Social Media Credentials',
     icon: Share2,
-    image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80',
+    image: '/SocialMedia.jpg',
     description: 'Manage your social media account access'
   },
   {

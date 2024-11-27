@@ -17,11 +17,14 @@ const LandingPage = () => {
   const location = useLocation();
 
   useEffect(() => {
+    // Handle scroll to section on navigation
     if (location.state?.scrollTo) {
       const element = document.getElementById(location.state.scrollTo);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
+      // Clear the state after scrolling
+      window.history.replaceState({}, document.title);
     }
   }, [location.state]);
 
@@ -34,17 +37,19 @@ const LandingPage = () => {
         transition={{ duration: 0.5 }}
         className="relative"
       >
-        <Hero />
+        <div id="home">
+          <Hero />
+        </div>
         <div id="features">
           <FeaturesSection />
+          <KeyFeaturesSection />
+          <SecuritySection />
         </div>
-        <KeyFeaturesSection />
-        <SecuritySection />
         <div id="about">
           <MissionVisionSection />
           <AboutSection />
+          <TestimonialsSection />
         </div>
-        <TestimonialsSection />
         <FAQ faqs={homeFaqs} />
         <CallToAction />
         <Footer />

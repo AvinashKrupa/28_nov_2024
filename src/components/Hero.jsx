@@ -1,11 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useAnimation } from 'framer-motion';
-import { Play } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
+import VideoPlayer from './VideoPlayer';
 
 const Hero = () => {
-  const videoRef = useRef(null);
   const containerRef = useRef(null);
   const { scrollY } = useScroll();
   const navigate = useNavigate();
@@ -13,23 +12,8 @@ const Hero = () => {
   const controls = useAnimation();
   const contentControls = useAnimation();
 
-  // Transform values for parallax effect
   const y = useTransform(scrollY, [0, 300], [0, 100]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
-
-  useEffect(() => {
-    // Preload video
-    if (videoRef.current) {
-      videoRef.current.load();
-      const playPromise = videoRef.current.play();
-      
-      if (playPromise !== undefined) {
-        playPromise.catch(error => {
-          console.log("Video autoplay failed:", error);
-        });
-      }
-    }
-  }, []);
 
   const handleGetStarted = async () => {
     if (isAuthenticated) {
@@ -42,75 +26,75 @@ const Hero = () => {
         controls.start({
           y: [0, window.innerHeight],
           scale: [1, 2],
-          transition: { duration: 1.5, ease: "easeInOut" }
+          transition: { duration: 1.5, ease: 'easeInOut' },
         }),
         contentControls.start({
           opacity: 0,
-          transition: { duration: 0.75, ease: "easeOut" }
-        })
+          transition: { duration: 0.75, ease: 'easeOut' },
+        }),
       ]);
-      
+
       navigate('/signup');
     }
   };
 
   const titleVariants = {
-    initial: { 
+    initial: {
       y: 0,
-      scale: 1
+      scale: 1,
     },
     animate: {
       y: 0,
       scale: 1,
       transition: {
-        duration: 1.5
-      }
+        duration: 1.5,
+      },
     },
     exit: {
       y: window.innerHeight,
       scale: 2,
       transition: {
         duration: 1.5,
-        ease: "easeInOut"
-      }
-    }
+        ease: 'easeInOut',
+      },
+    },
   };
 
   const contentVariants = {
     initial: { opacity: 1 },
-    exit: { 
+    exit: {
       opacity: 0,
       transition: {
         duration: 0.75,
-        ease: "easeOut"
-      }
-    }
+        ease: 'easeOut',
+      },
+    },
   };
 
   return (
     <div ref={containerRef} className="relative min-h-screen bg-dark-100 overflow-hidden">
-      {/* Background Video */}
-      <motion.div 
-        style={{ y, opacity }} 
+      {/* Background video */}
+      <motion.div
+        style={{ y, opacity }}
         className="absolute inset-0 w-full h-full"
       >
         <video
-          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
-          preload="auto"
           className="absolute inset-0 w-full h-full object-cover"
-          poster="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80"
+          poster="public/1111392_Grandpa_Gathering_1280x720.mp4"
         >
-          <source src="/hero-bg.mp4" type="video/mp4" />
+          <source src="/1111392_Grandpa_Gathering_1280x720.mp4" type="video/mp4" />
         </video>
+        {/* Adjusted Overlays */}
+        <div className="absolute inset-0 bg-black/20" /> {/* Semi-transparent black */}
         <div className="absolute inset-0 bg-gradient-to-b from-dark-100/80 via-dark-100/60 to-dark-100/80" />
       </motion.div>
 
-      {/* Content */}
-      <motion.div 
+      {/* Foreground content */}
+      <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -125,7 +109,7 @@ const Hero = () => {
           >
             Welcome To
           </motion.h2>
-          <motion.h1 
+          <motion.h1
             variants={titleVariants}
             initial="initial"
             animate={controls}
@@ -135,14 +119,13 @@ const Hero = () => {
           </motion.h1>
         </div>
 
-        <motion.div 
+        <motion.div
           variants={contentVariants}
           initial="initial"
           animate={contentControls}
           className="grid md:grid-cols-12 gap-12 items-center max-w-8xl mx-auto"
         >
-          {/* Main Content - Left Side */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -150,11 +133,11 @@ const Hero = () => {
           >
             <div className="space-y-6">
               <p className="text-xl md:text-4xl leading-relaxed text-white font-semibold">
-                "SacredSecret empowers individuals with rights over their assets, both in digital and physical form. The name allows users to select their nominee according to their wishes and choose who will inherit or access their assets. "Sacred" refers to the sanctity of their will, which is kept a Secret, shared only with the chosen individual, and independent of defined societal/system norms."
+                "SacredSecret empowers individuals with rights over their assets, both in digital and physical form. The name allows users to select their nominee according to their wishes and choose who will inherit or access their assets. 'Sacred' refers to the sanctity of their will, which is kept a Secret, shared only with the chosen individual, and independent of defined societal/system norms."
               </p>
             </div>
 
-            <motion.button 
+            <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleGetStarted}
@@ -164,31 +147,20 @@ const Hero = () => {
             </motion.button>
           </motion.div>
 
-          {/* Video Thumbnail - Right Side */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
             className="md:col-span-5 relative"
           >
             <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl">
-              <img
-                src="https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?auto=format&fit=crop&q=80"
-                alt="Digital Security"
-                className="w-full h-full object-cover"
-                loading="eager"
-                fetchpriority="high"
+              <VideoPlayer
+                videoUrl="/videos/public/inside_video.mp4"
+                thumbnailUrl="https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?auto=format&fit=crop&q=80"
+                title="Welcome to SacredSecret"
               />
-              <div className="absolute inset-0 bg-gradient-to-br from-dark-100/20 to-dark-100/60" />
-              <motion.button 
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="absolute inset-0 m-auto w-24 h-24 rounded-full bg-accent-100/90 flex items-center justify-center backdrop-blur-sm border-2 border-light-100/20"
-              >
-                <Play className="w-12 h-12 text-dark-100 ml-1" />
-              </motion.button>
             </div>
-            <motion.h3 
+            <motion.h3
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
